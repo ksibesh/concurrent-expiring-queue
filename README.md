@@ -4,10 +4,6 @@
 
 Traditional scheduling (like `PriorityQueue` or `DelayQueue`) operates at $O(\log n)$ for insertions. **RollingWheel** implements a **Hierarchical Timing Wheel** algorithm to ensure that whether you have 100 or 10,000,000 tasks, the performance remains constant and predictable.
 
-
-
----
-
 ## 🚀 Features
 
 * **O(1) Insertion & Expiration**: Constant time complexity for all scheduling operations.
@@ -17,8 +13,6 @@ Traditional scheduling (like `PriorityQueue` or `DelayQueue`) operates at $O(\lo
 * **Tombstone Deletion**: Supports $O(1)$ task cancellation via unique IDs.
 * **GC Friendly**: Uses a fixed infrastructure footprint to minimize Garbage Collection overhead and memory fragmentation.
 
----
-
 ## 🛠 How it Works
 
 The library organizes time into circular buffers. As the system "ticks" every second:
@@ -26,10 +20,6 @@ The library organizes time into circular buffers. As the system "ticks" every se
 1.  **Placement**: A task is placed in the "highest" possible wheel based on its magnitude of time (TTL).
 2.  **Cascading**: As higher-level wheels (Day/Hour/Minute) turn, tasks are "demoted" to the next finer-grained wheel as they get closer to their expiration.
 3.  **Execution**: When a task reaches the "Seconds" wheel and its specific slot is hit, the callback is submitted to the execution pool.
-
-
-
----
 
 ## 💻 Usage
 
@@ -64,8 +54,6 @@ Always perform a graceful shutdown to ensure the executor services are terminate
 myWheel.shutdown();
 ```
 
----
-
 ## ⚙️ Technical Specifications
 
 | Wheel | Size (Slots) | Resolution |
@@ -78,16 +66,12 @@ myWheel.shutdown();
 * **Inception Epoch**: The wheel calculates indices based on a static `INCEPTION_TIMESTAMP`, ensuring deterministic bucket placement even across application restarts.
 * **Locking**: Uses per-bucket synchronization to allow high-concurrency insertions without blocking the main ticker.
 
----
-
 ## 📂 Project Structure
 
 * **RollingWheel.java**: The core engine managing the timing wheels and ticker logic.
 * **WheelBucket.java**: Thread-safe container for items residing in a specific time slot.
 * **BucketItem.java**: The wrapper for your payload, metadata, and callback.
 * **SystemUtil.java**: Constants and time calculation utilities.
-
----
 
 ## 🤝 Contributing
 
